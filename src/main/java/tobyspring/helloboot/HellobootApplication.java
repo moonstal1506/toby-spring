@@ -5,6 +5,7 @@ import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.http.HttpHeaders;
@@ -26,17 +27,8 @@ import java.io.IOException;
 바인딩: 헬로 컨트롤러 파라미터로 넘어온 name울 String타입으로 인자값을 넘겨줌 타입 변경
  */
 @Configuration
+@ComponentScan//컴포넌트 빈등록
 public class HellobootApplication {
-
-    @Bean
-    public HelloController helloController(HelloService helloService) {
-        return new HelloController(helloService);
-    }
-
-    @Bean
-    public HelloService helloService(){
-        return new SimpleHelloService();
-    }
 
     public static void main(String[] args) {
         //스프링 컨테이너 생성
