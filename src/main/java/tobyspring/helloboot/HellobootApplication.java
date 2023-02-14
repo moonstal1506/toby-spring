@@ -30,18 +30,30 @@ import java.io.IOException;
 @ComponentScan//컴포넌트 빈등록
 public class HellobootApplication {
 
+    @Bean
+    public ServletWebServerFactory servletWebServerFactory(){
+        return new TomcatServletWebServerFactory();
+    }
+
+    // 스프링이 applicationContext 알아서 넣어줌
+    @Bean
+    public DispatcherServlet dispatcherServlet(){
+        return new DispatcherServlet();
+    }
+
     public static void main(String[] args) {
         //스프링 컨테이너 생성
         AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext() {
             @Override
             protected void onRefresh() {
                 super.onRefresh();
-                //dispatcherServlet 초기화
-                ServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
+                ServletWebServerFactory serverFactory = this.getBean(ServletWebServerFactory.class);
+                DispatcherServlet dispatcherServlet = this.getBean(DispatcherServlet.class);
+//                dispatcherServlet.setApplicationContext(this); 없어도 잘 동작
+
                 WebServer webServer = serverFactory.getWebServer(servletContext -> {
-                    servletContext.addServlet("dispatcherServlet",
-                            new DispatcherServlet(this)
-                    ).addMapping("/*");
+                    servletContext.addServlet("dispatcherServlet", dispatcherServlet)
+                            .addMapping("/*");
                 });
                 webServer.start();
             }
