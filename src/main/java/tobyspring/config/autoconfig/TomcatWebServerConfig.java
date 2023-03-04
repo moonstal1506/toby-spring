@@ -13,15 +13,21 @@ import tobyspring.config.MyAutoConfiguration;
 @ConditionalMyOnClass("org.apache.catalina.startup.Tomcat")
 public class TomcatWebServerConfig {
 
-    @Value("${contextPath}")
-    String contextPath;
+//    @Value("${contextPath:}")
+//    String contextPath;
+//
+//    @Value("${port:8080}")
+//    int port;
 
     @Bean("tomcatWebServerFactory")
     @ConditionalOnMissingBean //사용자가 등록한게 없으면 등록해라
-    public ServletWebServerFactory servletWebServerFactory() {
+    public ServletWebServerFactory servletWebServerFactory(ServerProperties properties) {
         TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
-        System.out.println(this.contextPath);
-        factory.setContextPath(this.contextPath);
+
+        factory.setContextPath(properties.getContextPath());
+        factory.setPort(properties.getPort());
+
         return factory;
     }
+
 }
