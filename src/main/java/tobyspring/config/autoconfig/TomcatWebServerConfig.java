@@ -1,5 +1,6 @@
 package tobyspring.config.autoconfig;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
@@ -12,14 +13,15 @@ import tobyspring.config.MyAutoConfiguration;
 @ConditionalMyOnClass("org.apache.catalina.startup.Tomcat")
 public class TomcatWebServerConfig {
 
+    @Value("${contextPath}")
+    String contextPath;
+
     @Bean("tomcatWebServerFactory")
     @ConditionalOnMissingBean //사용자가 등록한게 없으면 등록해라
-    public ServletWebServerFactory servletWebServerFactory(Environment env) {
-        //톰캣을 띄우는데 필요한 여러작업 지정
-        //Tomcat started on port(s): 8080 (http) with context path '/app'
+    public ServletWebServerFactory servletWebServerFactory() {
         TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
-//        factory.setContextPath("/app");
-        factory.setContextPath(env.getProperty("contextPath"));
+        System.out.println(this.contextPath);
+        factory.setContextPath(this.contextPath);
         return factory;
     }
 }
