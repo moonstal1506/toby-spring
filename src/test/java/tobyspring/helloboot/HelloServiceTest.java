@@ -3,23 +3,6 @@ package tobyspring.helloboot;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@UnitTest//메타애노테이션
-@interface FastUnitTest {
-}
-
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
-@Test//메타애노테이션
-@interface UnitTest {
-}
-
 public class HelloServiceTest {
 
     private static HelloRepository helloRepositoryStub = new HelloRepository() {
